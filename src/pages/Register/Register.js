@@ -12,6 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./Register.styles";
+import axios from "axios";
+import RegisterEmailCheck from "../../component/Modal/RegisterEmailCheck/RegisterEmailCheck";
 
 const LoginSchema = Yup.object().shape({
   ad: Yup.string().required("Bu alanın girilmesi zorunludur."),
@@ -28,6 +30,8 @@ const LoginSchema = Yup.object().shape({
 
 const Register = () => {
   const [passwordSecurity, setPasswordSecurity] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const initialValues = {
     ad: "",
     soyad: "",
@@ -43,7 +47,14 @@ const Register = () => {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       try {
-        // const { data } = await login(values.email, values.password, token);
+        axios.post(`https://dummyjson.com/users/add`, {
+          firstName: values.ad,
+          lastName: values.soyad,
+          phone: values.telefon,
+          email: values.eposta,
+          password: values.sifre,
+        });
+        setModalVisible(true);
       } catch (err) {
         console.error(err);
       }
@@ -193,6 +204,10 @@ const Register = () => {
           </Text>
         </View>
       </ScrollView>
+      <RegisterEmailCheck
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 };

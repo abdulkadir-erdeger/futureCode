@@ -12,12 +12,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./Login.styles";
+import axios from "axios";
 import ForgetPassword from "../../component/Modal/ForgetPassword";
 
 const LoginSchema = Yup.object().shape({
-  eposta: Yup.string()
-    .email("Geçerli bir e-posta girin")
-    .required("Bu alanın girilmesi zorunludur."),
+  eposta: Yup.string().required("Bu alanın girilmesi zorunludur."),
   sifre: Yup.string()
     .min(6, "Şifre en az 6 karakter olmalı")
     .required("Bu alanın girilmesi zorunludur."),
@@ -26,21 +25,25 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   const [passwordSecurity, setPasswordSecurity] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [logError, setLogError] = useState("");
 
   const navigation = useNavigation();
 
-  const initialValues = { eposta: "test@test.com", sifre: "123456" };
+  const initialValues = { eposta: "kminchelle", sifre: "0lelplR" };
 
   const formik = useFormik({
     initialValues,
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      try {
-        //const { data } = await login(values.email, values.password, token);
-        navigation.navigate("ProductList");
-      } catch (err) {
-        console.error(err);
-      }
+      axios
+        .post("https://dummyjson.com/auth/login", {
+          username: values.eposta,
+          password: values.sifre,
+        })
+        .then((res) => {
+          navigation.navigate("ProductList"), setLogError("");
+        })
+        .catch((err) => setLogError(err));
     },
   });
 
@@ -79,6 +82,7 @@ const Login = () => {
         <Text style={styles.title}>
           Alışverişe başlamak için giriş yapınız.
         </Text>
+
         <TextInput
           value={formik.values.eposta}
           onChangeText={formik.handleChange("eposta")}
@@ -117,6 +121,13 @@ const Login = () => {
         <Pressable onPress={() => setModalVisible(true)}>
           <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
         </Pressable>
+
+        {logError && (
+          <Text style={[styles.error, { marginTop: 20, marginBottom: -25 }]}>
+            {String(logError)}
+          </Text>
+        )}
+
         <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
           <Text style={styles.buttonTitle}>Giriş Yap</Text>
         </TouchableOpacity>
