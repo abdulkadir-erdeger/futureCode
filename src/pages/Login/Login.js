@@ -5,12 +5,14 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./Login.styles";
+import ForgetPassword from "../../component/Modal/ForgetPassword";
 
 const LoginSchema = Yup.object().shape({
   eposta: Yup.string()
@@ -23,8 +25,11 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const [passwordSecurity, setPasswordSecurity] = useState(true);
-  const initialValues = { eposta: "test@test.com", sifre: "123456" };
+  const [modalVisible, setModalVisible] = useState(false);
+
   const navigation = useNavigation();
+
+  const initialValues = { eposta: "test@test.com", sifre: "123456" };
 
   const formik = useFormik({
     initialValues,
@@ -109,7 +114,9 @@ const Login = () => {
         {formik.errors.sifre && formik.touched.sifre && (
           <Text style={styles.error}>{formik.errors.sifre}</Text>
         )}
-        <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
+        <Pressable onPress={() => setModalVisible(true)}>
+          <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
+        </Pressable>
         <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
           <Text style={styles.buttonTitle}>Giriş Yap</Text>
         </TouchableOpacity>
@@ -142,6 +149,11 @@ const Login = () => {
       </View>
 
       {/*Body */}
+
+      <ForgetPassword
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 };
