@@ -204,10 +204,12 @@ const Register = () => {
           </Text>
         </View>
       </ScrollView>
+      {/* Check Modal */}
       <RegisterEmailCheck
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
+      {/* Check Modal */}
     </View>
   );
 };

@@ -92,4 +92,18 @@ export default StyleSheet.create({
     fontWeight: "400",
     lineHeight: 16,
   },
+  propertiesRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 13,
+  },
+  propertiesTitle: {
+    color: "#000",
+    flex: 1.5,
+    fontWeight: "700",
+  },
+  propertiesDescription: {
+    flex: 2,
+    color: "#353535",
+  },
 });

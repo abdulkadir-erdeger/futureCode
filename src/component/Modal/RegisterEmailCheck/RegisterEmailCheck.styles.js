@@ -67,5 +67,6 @@ export default StyleSheet.create({
     lineHeight: 19.2,
     marginTop: 46,
     marginBottom: 38,
+    width: 344,
   },
 });

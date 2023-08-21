@@ -160,11 +160,12 @@ const Login = () => {
       </View>
 
       {/*Body */}
-
+      {/* Check Modal */}
       <ForgetPassword
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
+      {/* Check Modal */}
     </View>
   );
 };
